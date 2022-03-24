@@ -33,10 +33,10 @@ class ErshoufangSpider(Spider):
             item['unit_price'] = unit_price
             yield item
         
-        if self.page_num <100:
-            new_url = f'https://hz.lianjia.com/ershoufang/xihu/pg{self.page_num}'
-            self.page_num += 1
-            yield Request(url=new_url,callback=self.parse)
+        # if self.page_num <100:
+        #     new_url = f'https://hz.lianjia.com/ershoufang/xihu/pg{self.page_num}'
+        #     self.page_num += 1
+        #     yield Request(url=new_url,callback=self.parse)
 
 
 

@@ -45,15 +45,23 @@ class MongoPipeline:
     def process_item(self, item, spider):
         temp_position = item['position'].split('-')
         temp_unit_price = ''.join(item['unit_price'][0:-3].split(','))
+        temp_houseinfo = [i.strip() for i in item['houseinfo'].split('|')]
+        print('temp_houseinfo',temp_houseinfo)
         mongo_dict = {}
         mongo_dict['name'] = item['name'] # 名称
-        mongo_dict['province'] = '浙江省' #
+        mongo_dict['province'] = '浙江省' # 
         mongo_dict['city'] = '杭州市' #
         mongo_dict['district'] = '西湖区' #
         mongo_dict['plate'] = temp_position[1] # 板块
         mongo_dict['community'] = temp_position[0] # 社区
+        mongo_dict['area'] = float(temp_houseinfo[1][0:-2]) # 面积 平米
+        mongo_dict['house_type'] = temp_houseinfo[0] # 户型
+        mongo_dict['orientation'] = temp_houseinfo[2] # 户型
+        mongo_dict['orientation'] = temp_houseinfo[3] # 装修情况
+        mongo_dict['floor'] = temp_houseinfo[4] # 楼层
+        mongo_dict['build_type'] = temp_houseinfo[5] # 建筑类型
         mongo_dict['unit_price'] = int(temp_unit_price) # 元/平
-        mongo_dict['total_price'] = int(item['total_price'][0:-1]) # 总价，单位 万
+        mongo_dict['total_price'] = float(item['total_price'][0:-1]) # 总价，单位 万
         mongo_dict['url'] = item['url'] # 连接地址
         mongo_dict['update'] = datetime.now()
         self.mycol.insert_one(mongo_dict)
